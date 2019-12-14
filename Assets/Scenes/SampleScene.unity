@@ -785,10 +785,12 @@ MonoBehaviour:
     FLOATINESS: 0.5
   collision:
     OFFSET: 0
-    RAY_DISTANCE_LR: 1
-    RAY_DISTANCE_DOWN: 0.5
+    RAY_DISTANCE_LR: 0.5
+    RAY_DISTANCE_DOWN: 1
     RAY_DISTANCE_UP: 0.7
     UP_COLLISION_STRICTNESS_FACTOR: 0.5
+    LR_COLLISION_HEIGHT_MULT: 0.5
+    UD_COLLISION_HEIGHT_MULT: 0.5
   collisionMask:
     serializedVersion: 2
     m_Bits: 512

@@ -90,6 +90,8 @@ public class RunnerController : MonoBehaviour
 		public float RAY_DISTANCE_DOWN = 0.6f;                  // as above, for down
 		public float RAY_DISTANCE_UP = 0.3f;                    // as above, for up
 		public float UP_COLLISION_STRICTNESS_FACTOR = 0.5f;     // how lenient the up collision is with corners. High leniency will have the player round the corner instead of colliding.
+		public float LR_COLLISION_HEIGHT_MULT = 1f;				// size of the left and right collision boxes vertically. Smaller means clipping onto ledges when your just a bit too short 
+		public float UD_COLLISION_HEIGHT_MULT = 1f;				// size of the up / down collision boxes vertically. Smaller means sliding off edges.
 	}
 	public Collision collision;
 
@@ -134,8 +136,8 @@ public class RunnerController : MonoBehaviour
 
 	protected virtual void Update()
 	{
-		//HandleMovement();
-		//HandleJump();
+		HandleMovement();
+		HandleJump();
 
 		//EnforceMaxSpeeds();
 		DetectCollision();
@@ -143,9 +145,11 @@ public class RunnerController : MonoBehaviour
 		// apply final velocity to character
 		this.transform.Translate(velocity * Time.deltaTime);
 		//print(velocity.ToString("F4"));
+	}
 
-
-		// garbage movement
+	void HandleMovement()
+	{
+		// TEMP MOVEMENT
 		if (input.moveRight_bHeld)
 		{
 			velocity.x = 8f;
@@ -161,8 +165,8 @@ public class RunnerController : MonoBehaviour
 
 		if (input.jump_bDown)
 		{
-			Rigidbody2D rb = GetComponent<Rigidbody2D>();
-			rb.AddForce(new Vector2(0f, 300f));
+			//Rigidbody2D rb = GetComponent<Rigidbody2D>();
+			//rb.AddForce(new Vector2(0f, 300f));
 		}
 
 		// apply gravity
@@ -170,8 +174,102 @@ public class RunnerController : MonoBehaviour
 		{
 			velocity.y -= general.GRAVITY_FORCE * Time.deltaTime;
 		}
+	}
 
+	void HandleJump()
+	{
+		// reset a few things when player lands
+		if (onGround)
+		{
+			airJumpCounter = 0; // air jumps
+			if (!jumpLanded)
+			{
+				//PlayAudioClip(jumpLandSound, landAudioVolume);
+				jumpLanded = true;
+			}
+		}
 
+		//unity>edit>project settings >input - define input values
+		if (input.jump_bDown)
+		{
+			isJumpHeld = true;
+			if (!disableJump)
+			{
+				// check for air jumping
+				if (!onGround && airJumpCounter < abilities.maxAirJumps)
+				{
+					airJumpCounter++;
+					//PlayAudioClip(airJumpSound, jumpAudioVolume);
+					isJumping = true;
+					velocity.y = 0f;
+					velocity += Vector2.up * jump.INIT_FORCE;
+				}
+				// check for ground jumping
+				else if (onGround)
+				{
+					//PlayAudioClip(groundJumpSound, jumpAudioVolume);
+					isJumping = true;
+					velocity.y = 0f;
+					velocity += Vector2.up * jump.INIT_FORCE;
+				} // else, dont jump
+			}
+		}
+
+		if (input.jump_bUp)
+		{
+			isJumpHeld = false;
+		}
+
+		// check for the end of the jump
+		if (isJumping)
+		{
+			// end jump if button no longer held, and min jump duration elapsed
+			if (!isJumpHeld && jumpDuration >= jump.MIN_DURATION)
+			{
+				EndJump();
+				velocity.y *= jump.FLOATINESS; // apply jump floatiness
+			}
+			else
+			{
+				//main jump logic, applied every frame of the jump
+				// end the jump when player is no longer moving up.
+				if (velocity.y > 0f)
+				{
+					//slow down jump after START_DECAY time
+					if (jumpDuration >= jump.START_DECAY)
+					{
+						velocity.y += jump.ACCEL_FORCE - (jump.DECAY_RATE * Time.deltaTime); // apply decay
+						if (velocity.y < 0f)
+						{
+							velocity.y = 0f;
+						}
+					}
+					else // full speed head otherwise
+					{
+						velocity.y += (jump.ACCEL_FORCE * Time.deltaTime);
+						jumpDuration += Time.deltaTime;
+					}
+
+					//enforce max jump speed
+					if (velocity.y > jump.MAX_RISE_SPEED)
+					{
+						velocity.y = jump.MAX_RISE_SPEED;
+					}
+				}
+				else // end jump
+				{
+					velocity.y = 0f;
+					EndJump();
+				}
+			}
+		}
+	}
+
+	void EndJump()
+	{
+		jumpDuration = 0;
+		isJumping = false;
+		jumpLanded = false;
 	}
 
 	#region Constraints
@@ -187,8 +285,8 @@ public class RunnerController : MonoBehaviour
 		// player is 0.025 units inside a wall at closest., need to offset boxcast by at least that much for it to always work
 		v = new Vector2(transform.position.x - collision.OFFSET, transform.position.y - 0f);
 
-		pScaleX = new Vector2(0.01f, boxCollider.size.y * transform.localScale.y * 0.9f);  // localscale may not be needed
-		pScaleY = new Vector2(boxCollider.size.x * transform.localScale.x * 0.01f, 0.01f);
+		pScaleX = new Vector2(0.01f, boxCollider.size.y * transform.localScale.y * collision.LR_COLLISION_HEIGHT_MULT);  // localscale may not be needed
+		pScaleY = new Vector2(boxCollider.size.x * transform.localScale.x * collision.UD_COLLISION_HEIGHT_MULT, 0.01f);
 
 		//pScaleX = new Vector2(1f, 5f);
 
