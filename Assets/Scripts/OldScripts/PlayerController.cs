@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : RunnerController {
 
     public bool controlEnabled = true;
+	public bool movementEnabled = false;
     private int clearState = 0;
 
     // Use this for initialization
@@ -33,16 +34,19 @@ public class PlayerController : RunnerController {
     void HandleInput()
     {
         // Movement
-        input.moveLR_bDown = (Input.GetButtonDown("Horizontal"));
-        input.moveUD_bDown = (Input.GetButtonDown("Vertical"));
+		if (movementEnabled)
+		{
+			input.moveLR_bDown = (Input.GetButtonDown("Horizontal"));
+			input.moveUD_bDown = (Input.GetButtonDown("Vertical"));
 
-		input.moveRight_bHeld = (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0);
-		input.moveLeft_bHeld = (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") < 0);
-		input.moveUp_bHeld = (Input.GetButton("Vertical") && Input.GetAxis("Vertical") > 0);
-		input.moveDown_bHeld = (Input.GetButton("Vertical") && Input.GetAxis("Vertical") < 0);
+			input.moveRight_bHeld = (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") > 0);
+			input.moveLeft_bHeld = (Input.GetButton("Horizontal") && Input.GetAxis("Horizontal") < 0);
+			input.moveUp_bHeld = (Input.GetButton("Vertical") && Input.GetAxis("Vertical") > 0);
+			input.moveDown_bHeld = (Input.GetButton("Vertical") && Input.GetAxis("Vertical") < 0);
 
-        input.moveLR_bUp = (Input.GetButtonUp("Horizontal"));
-        input.moveUD_bUp = (Input.GetButtonUp("Vertical"));
+			input.moveLR_bUp = (Input.GetButtonUp("Horizontal"));
+			input.moveUD_bUp = (Input.GetButtonUp("Vertical"));
+		}
 
         // jump
         input.jump_bDown = (Input.GetButtonDown("Jump"));

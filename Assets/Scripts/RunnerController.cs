@@ -150,24 +150,20 @@ public class RunnerController : MonoBehaviour
 	void HandleMovement()
 	{
 		// TEMP MOVEMENT
+		
 		if (input.moveRight_bHeld)
 		{
-			velocity.x = 8f;
+			velocity.x = walk.MAX_SPEED;
 		}
 		else if (input.moveLeft_bHeld)
 		{
-			velocity.x = -8f;
+			velocity.x = -walk.MAX_SPEED;
 		}
 		else
 		{
 			velocity.x = 0f;
 		}
-
-		if (input.jump_bDown)
-		{
-			//Rigidbody2D rb = GetComponent<Rigidbody2D>();
-			//rb.AddForce(new Vector2(0f, 300f));
-		}
+		
 
 		// apply gravity
 		if (!isJumping && (!onGround || onGroundGraceTimerState == 1)) // grace 1: active
