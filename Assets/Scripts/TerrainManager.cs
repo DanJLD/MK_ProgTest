@@ -18,6 +18,8 @@ public class TerrainManager : MonoBehaviour
 	public float destroyPoint = -50f;
 	public float spawnPoint = 50f;
 
+	public Vector3 nextSpawnLoc;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -27,15 +29,43 @@ public class TerrainManager : MonoBehaviour
 		{
 			// spawn a random ground piece
 			int rng = Random.Range(0, groundBank.Count);
-			GameObject go = Instantiate(groundBank[rng].spawnPrefab, groundOffset, Quaternion.identity); 
-			go.transform.position += new Vector3(i, 0f, 0f); // move it into position
+			GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(i, 0f, 0f), Quaternion.identity); 
+			spawnedObjects.Add(go);
 			i += groundBank[rng].xUnitsOccupied; // move spawn position forward
+		}
+		nextSpawnLoc = new Vector3(i, 0f, 0f);
+    }
+
+	// Update is called once per frame
+	void Update()
+	{
+		// move all terrain objects down the field
+		// avoiding the use of a endlessly moving metaObject to avoid infinitely increasing position values, and eventual floating point shenanigans
+		Vector3 deltaPos = new Vector3(scrollSpeed * Time.deltaTime, 0f, 0f);
+		for (int i = spawnedObjects.Count-1; i >= 0; i--) // backwards iteration so item deletion doesnt break things
+		{
+			spawnedObjects[i].transform.position -= deltaPos;
+			if (spawnedObjects[i].transform.position.x <= destroyPoint)
+			{
+				Destroy(spawnedObjects[i]);
+				spawnedObjects.RemoveAt(i);
+			}
+		}
+		nextSpawnLoc -= deltaPos; // also move spawn position
+
+		//spawn more ground if needed
+		if (nextSpawnLoc.x <= spawnPoint)
+		{
+			SpawnGroundTile();
 		}
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	void SpawnGroundTile()
+	{
+		// spawn a random ground piece
+		int rng = Random.Range(0, groundBank.Count);
+		GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(nextSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		spawnedObjects.Add(go);
+		nextSpawnLoc += new Vector3(groundBank[rng].xUnitsOccupied, 0f, 0f);
+	}
 }
