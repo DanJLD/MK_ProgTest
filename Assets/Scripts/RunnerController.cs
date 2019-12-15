@@ -396,7 +396,7 @@ public class RunnerController : MonoBehaviour
 	#endregion
 
 	// kills the player and ends the game
-	void KillPlayer()
+	public void KillPlayer()
 	{
 		GetComponentInChildren<Camera>().transform.SetParent(null); // detach camera
 		Destroy(this.gameObject); // kill player

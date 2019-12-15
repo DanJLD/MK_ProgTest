@@ -9,7 +9,7 @@ public class PlayerKiller : MonoBehaviour
 
 		if (collision.tag == "Player")
 		{
-			collision.GetComponent<PlayerController>().SendMessage("KillPlayer");
+			collision.GetComponent<PlayerController>().KillPlayer();
 		}
 	}
 }
