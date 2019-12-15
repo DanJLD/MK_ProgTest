@@ -28,7 +28,6 @@ public class PlayerController : RunnerController {
         {
             ClearInput();
         }
-		
 	}
 
     void HandleInput()
@@ -52,8 +51,6 @@ public class PlayerController : RunnerController {
         input.jump_bDown = (Input.GetButtonDown("Jump"));
         input.jump_bHeld = (Input.GetButton("Jump"));
         input.jump_bUp = (Input.GetButtonUp("Jump"));
-
-		input.restart_bDown = Input.GetButtonDown("Restart");
     }
 
     void ClearInput()
@@ -92,7 +89,5 @@ public class PlayerController : RunnerController {
                 // do nothing
                 break;
         }
-
-
     }
 }

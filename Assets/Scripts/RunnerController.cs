@@ -20,8 +20,6 @@ public class RunnerController : MonoBehaviour
 		public bool jump_bUp = false;
 		public bool jump_bHeld = false;
 		public bool jump_bDown = false;
-
-		public bool restart_bDown = false;
 	}
 	public InputState input;
 
@@ -102,30 +100,12 @@ public class RunnerController : MonoBehaviour
 	RaycastHit2D rayHit;
 	private BoxCollider2D boxCollider;
 
-	float recentDamageTimer = 0;
-	bool recentDamage = false;
 	public bool onGround = false; // TODO: Make all state variables (onGround, collision, jumping, attacking, etc) public, so other entities can act based on them. Organise in a struct
 	int onGroundGraceTimerState = 0;
 	float onGroundGraceTimer = 0f;
 	bool rightCollision = false;
 	bool leftCollision = false;
 	bool upCollision = false;
-	bool isSpriteActive = true;
-	int spriteDamageBlinkTimer = 0;
-	bool isKnockbackActive = false;
-	float knockbackTimer = 0f;
-	float knockbackTimerMax = 0f; // set by AddKnockback() on each knockback instance
-	bool isKnockbackControllable = false;
-
-	// used by SetPlayerAbility to disable abilities temporarily
-	bool disableMovement = false;
-	bool disableJump = false;
-	bool disableDash = false;
-	bool disableWallJump = false;
-	int movementDisableCounter = 0;
-	int jumpDisableCounter = 0;
-	int wallJumpDisableCounter = 0;
-	int dashDisableCounter = 0;
 
 	protected virtual void Start() // virtual allows it to be overridden by child AI classes
 	{
@@ -150,7 +130,6 @@ public class RunnerController : MonoBehaviour
 	void HandleMovement()
 	{
 		// TEMP MOVEMENT
-		
 		if (input.moveRight_bHeld)
 		{
 			velocity.x = walk.MAX_SPEED;
@@ -189,26 +168,23 @@ public class RunnerController : MonoBehaviour
 		if (input.jump_bDown)
 		{
 			isJumpHeld = true;
-			if (!disableJump)
+			// check for air jumping
+			if (!onGround && airJumpCounter < abilities.maxAirJumps)
 			{
-				// check for air jumping
-				if (!onGround && airJumpCounter < abilities.maxAirJumps)
-				{
-					airJumpCounter++;
-					//PlayAudioClip(airJumpSound, jumpAudioVolume);
-					isJumping = true;
-					velocity.y = 0f;
-					velocity += Vector2.up * jump.INIT_FORCE;
-				}
-				// check for ground jumping
-				else if (onGround)
-				{
-					//PlayAudioClip(groundJumpSound, jumpAudioVolume);
-					isJumping = true;
-					velocity.y = 0f;
-					velocity += Vector2.up * jump.INIT_FORCE;
-				} // else, dont jump
+				airJumpCounter++;
+				//PlayAudioClip(airJumpSound, jumpAudioVolume);
+				isJumping = true;
+				velocity.y = 0f;
+				velocity += Vector2.up * jump.INIT_FORCE;
 			}
+			// check for ground jumping
+			else if (onGround)
+			{
+				//PlayAudioClip(groundJumpSound, jumpAudioVolume);
+				isJumping = true;
+				velocity.y = 0f;
+				velocity += Vector2.up * jump.INIT_FORCE;
+			} // else, dont jump
 		}
 
 		if (input.jump_bUp)
@@ -418,4 +394,12 @@ public class RunnerController : MonoBehaviour
 		}
 	}
 	#endregion
+
+	// kills the player and ends the game
+	void KillPlayer()
+	{
+		GetComponentInChildren<Camera>().transform.SetParent(null); // detach camera
+		Destroy(this.gameObject); // kill player
+		// better solution forthcoming
+	}
 }

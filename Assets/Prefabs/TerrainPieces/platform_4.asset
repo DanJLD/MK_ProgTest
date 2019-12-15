@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPrefab: {fileID: 6670725001411206283, guid: 1a092914e0ceb4143984ff125103e704,
     type: 3}
-  xUnitsOccupied: 16
+  xUnitsOccupied: 144
   minPrevYHeight: 0

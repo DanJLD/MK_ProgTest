@@ -580,17 +580,18 @@ MonoBehaviour:
   groundBank:
   - {fileID: 11400000, guid: fc927b38e3b781e478eb409955cccd7c, type: 2}
   platformBank:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 568a5415bced8f848b60976173b00374, type: 2}
+  - {fileID: 11400000, guid: 795ab203da664e245a7a620509e6e2fb, type: 2}
+  - {fileID: 11400000, guid: 8fc890b595ffec84286a7f9ded43b29b, type: 2}
   spawnedObjects: []
   scrollSpeed: 10
   scrollIncreaseAmount: 0.05
   scrollIncreaseTickRate: 5
   groundOffset: {x: 0, y: 0}
-  destroyPoint: -50
+  destroyPoint: -100
   spawnPoint: 50
-  nextSpawnLoc: {x: 0, y: 0, z: 0}
+  nextGroundSpawnLoc: {x: 0, y: 0, z: 0}
+  nextPlatformSpawnLoc: {x: 0, y: 0, z: 0}
 --- !u!4 &1198757100
 Transform:
   m_ObjectHideFlags: 0
