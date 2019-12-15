@@ -6,8 +6,12 @@ using UnityEngine.SceneManagement;
 public class LevelManager : MonoBehaviour
 {
 	public float playerScore = 0f;
-    // Start is called before the first frame update
-    void Start()
+	public int playerCoins= 0;
+
+	public TMPro.TextMeshPro scoreText;
+	public TMPro.TextMeshPro coinsText;
+	// Start is called before the first frame update
+	void Start()
     {
         
     }
@@ -19,7 +23,11 @@ public class LevelManager : MonoBehaviour
 		{
 			RestartGame();
 		}
-    }
+
+		//updateUI
+		scoreText.text = Mathf.Floor(playerScore).ToString();
+		coinsText.text = playerCoins.ToString();
+	}
 
 	public void RestartGame()
 	{
@@ -29,5 +37,10 @@ public class LevelManager : MonoBehaviour
 	public void GainScore(float n)
 	{
 		playerScore += n;
+	}
+
+	public void GainCoins(int n)
+	{
+		playerCoins += n;
 	}
 }

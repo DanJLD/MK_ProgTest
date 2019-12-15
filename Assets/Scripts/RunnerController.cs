@@ -244,6 +244,34 @@ public class RunnerController : MonoBehaviour
 		jumpLanded = false;
 	}
 
+
+	// enforce maximum movement speeds
+	void EnforceMaxSpeeds()
+	{
+		// enforce jump maximum
+		if (velocity.y > jump.MAX_RISE_SPEED)
+		{
+			velocity = new Vector2(velocity.x, jump.MAX_RISE_SPEED);
+		}
+		else // check for falling maximums
+		{
+			if (velocity.y < -jump.MAX_FALL_SPEED) // apply regular max fall speed
+			{
+				velocity = new Vector3(velocity.x, -jump.MAX_FALL_SPEED);
+			}
+		}
+
+		// enforce max horizontal walk speeds
+		if (velocity.x > walk.MAX_SPEED)
+		{
+			velocity = new Vector3(walk.MAX_SPEED, velocity.y);
+		}
+		else if (velocity.x < -walk.MAX_SPEED)
+		{
+			velocity = new Vector3(-walk.MAX_SPEED, velocity.y);
+		}
+	}
+
 	#region Constraints
 	// detects collision objects around the player and prevents movement into them
 	// redefined by me to provide smoother functionality and greater control over the default rigidbody collision mechanics
