@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3135fc774b31b048aa8a8e16619486c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelManager: {fileID: 0}
   input:
     moveLeft_bHeld: 0
     moveRight_bHeld: 0
@@ -128,7 +129,7 @@ MonoBehaviour:
     m_Bits: 512
   onGround: 0
   controlEnabled: 1
-  movementEnabled: 1
+  movementEnabled: 0
 --- !u!50 &406499546
 Rigidbody2D:
   serializedVersion: 4

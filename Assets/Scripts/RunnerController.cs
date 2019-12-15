@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RunnerController : MonoBehaviour
 {
+	public LevelManager levelManager;
+
 	[System.Serializable]
 	public class InputState  // subclasses used to categorise and order variables in unity inspector
 	{
@@ -428,6 +430,9 @@ public class RunnerController : MonoBehaviour
 	{
 		GetComponentInChildren<Camera>().transform.SetParent(null); // detach camera
 		Destroy(this.gameObject); // kill player
-		// better solution forthcoming
+		if (levelManager != null)
+		{
+			levelManager.EndGame();
+		}
 	}
 }

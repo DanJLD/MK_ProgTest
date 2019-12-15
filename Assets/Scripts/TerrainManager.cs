@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TerrainManager : MonoBehaviour
 {
+	public bool isRunning = true;
+	public LevelManager levelManager;
 	public List<TerrainPiece> groundBank;
 	public List<TerrainPiece> platformBank;
 
@@ -12,6 +14,7 @@ public class TerrainManager : MonoBehaviour
 	public float scrollSpeed = 1f;
 	public float scrollIncreaseAmount = 0.05f;
 	public float scrollIncreaseTickRate = 5f;
+	public float distanceScoreMult = 1f;
 
 	public Vector2 groundOffset;
 
@@ -41,31 +44,39 @@ public class TerrainManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		// move all terrain objects down the field
-		// avoiding the use of a endlessly moving metaObject to avoid infinitely increasing position values, and eventual floating point shenanigans
-		Vector3 deltaPos = new Vector3(scrollSpeed * Time.deltaTime, 0f, 0f);
-		for (int i = spawnedObjects.Count-1; i >= 0; i--) // backwards iteration so item deletion doesnt break things
+		if (isRunning) // dont run if the game has ended
 		{
-			spawnedObjects[i].transform.position -= deltaPos;
-			if (spawnedObjects[i].transform.position.x <= destroyPoint)
+			// move all terrain objects down the field
+			// avoiding the use of a endlessly moving metaObject to avoid infinitely increasing position values, and eventual floating point shenanigans
+			Vector3 deltaPos = new Vector3(scrollSpeed * Time.deltaTime, 0f, 0f);
+			for (int i = spawnedObjects.Count - 1; i >= 0; i--) // backwards iteration so item deletion doesnt break things
 			{
-				Destroy(spawnedObjects[i]);
-				spawnedObjects.RemoveAt(i);
+				spawnedObjects[i].transform.position -= deltaPos;
+				if (spawnedObjects[i].transform.position.x <= destroyPoint)
+				{
+					Destroy(spawnedObjects[i]);
+					spawnedObjects.RemoveAt(i);
+				}
 			}
-		}
-		nextGroundSpawnLoc -= deltaPos; // also move spawn position
-		nextPlatformSpawnLoc -= deltaPos; // also move spawn position
+			nextGroundSpawnLoc -= deltaPos; // also move spawn position
+			nextPlatformSpawnLoc -= deltaPos; // also move spawn position
+			if (levelManager != null)
+			{
+				levelManager.playerDistance += deltaPos.x;
+				levelManager.GainScore(deltaPos.x * distanceScoreMult);
+			}
 
-		// spawn more ground if needed
-		if (nextGroundSpawnLoc.x <= spawnPoint)
-		{
-			SpawnGroundTile();
-		}
+			// spawn more ground if needed
+			if (nextGroundSpawnLoc.x <= spawnPoint)
+			{
+				SpawnGroundTile();
+			}
 
-		// spawn platform tiles
-		if (nextPlatformSpawnLoc.x <= spawnPoint)
-		{
-			SpawnPlatformTile();
+			// spawn platform tiles
+			if (nextPlatformSpawnLoc.x <= spawnPoint)
+			{
+				SpawnPlatformTile();
+			}
 		}
 	}
 
