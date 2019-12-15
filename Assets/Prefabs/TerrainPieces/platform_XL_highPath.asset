@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fe04f9396becf949a67cc0632a7a68d, type: 3}
-  m_Name: platform_5
+  m_Name: platform_XL_highPath
   m_EditorClassIdentifier: 
-  spawnPrefab: {fileID: 4374930049728544653, guid: 8e288c78b056dc94fb9cf858cbebb93e,
+  spawnPrefab: {fileID: 6728746873079034179, guid: 862563a922a839e4b9d8ac2988f77255,
     type: 3}
-  xUnitsOccupied: 64
+  xUnitsOccupied: 128
   minPrevYHeight: 0
