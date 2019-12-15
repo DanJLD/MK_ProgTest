@@ -1846,7 +1846,7 @@ MonoBehaviour:
   scrollIncreaseTickRate: 5
   distanceScoreMult: 2
   groundOffset: {x: 0, y: 0}
-  destroyPoint: -100
+  destroyPoint: -150
   spawnPoint: 50
   nextGroundSpawnLoc: {x: 0, y: 0, z: 0}
   nextPlatformSpawnLoc: {x: 0, y: 0, z: 0}
@@ -1876,6 +1876,51 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelManager
       objectReference: {fileID: 0}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: scoreText
+      value: 
+      objectReference: {fileID: 510856195}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: coinsText
+      value: 
+      objectReference: {fileID: 1723281127}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: finalScoreText
+      value: 
+      objectReference: {fileID: 833353296}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: finalDistanceText
+      value: 
+      objectReference: {fileID: 1380341393}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: finalCoinText
+      value: 
+      objectReference: {fileID: 1632830575}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: finalScoreBoard
+      value: 
+      objectReference: {fileID: 332285980}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: gameplayUI
+      value: 
+      objectReference: {fileID: 848347369}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: finalRestartButton
+      value: 
+      objectReference: {fileID: 2122928139}
+    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
+        type: 3}
+      propertyPath: terrainManager
+      value: 
+      objectReference: {fileID: 1198757099}
     - target: {fileID: 8516108886047282631, guid: dc5974d8746eb024f8e8cc3c5fe36672,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1931,51 +1976,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: scoreText
-      value: 
-      objectReference: {fileID: 510856195}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: coinsText
-      value: 
-      objectReference: {fileID: 1723281127}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: finalScoreText
-      value: 
-      objectReference: {fileID: 833353296}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: finalDistanceText
-      value: 
-      objectReference: {fileID: 1380341393}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: finalCoinText
-      value: 
-      objectReference: {fileID: 1632830575}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: finalScoreBoard
-      value: 
-      objectReference: {fileID: 332285980}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: gameplayUI
-      value: 
-      objectReference: {fileID: 848347369}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: finalRestartButton
-      value: 
-      objectReference: {fileID: 2122928139}
-    - target: {fileID: 8516108886047282630, guid: dc5974d8746eb024f8e8cc3c5fe36672,
-        type: 3}
-      propertyPath: terrainManager
-      value: 
-      objectReference: {fileID: 1198757099}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc5974d8746eb024f8e8cc3c5fe36672, type: 3}
 --- !u!1 &1380341392
