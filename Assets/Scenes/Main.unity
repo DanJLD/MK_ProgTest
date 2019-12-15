@@ -579,7 +579,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundBank:
   - {fileID: 11400000, guid: fc927b38e3b781e478eb409955cccd7c, type: 2}
-  platformBank: []
+  platformBank:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   spawnedObjects: []
   scrollSpeed: 10
   scrollIncreaseAmount: 0.05

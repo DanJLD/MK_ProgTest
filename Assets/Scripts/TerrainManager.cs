@@ -18,7 +18,8 @@ public class TerrainManager : MonoBehaviour
 	public float destroyPoint = -50f;
 	public float spawnPoint = 50f;
 
-	public Vector3 nextSpawnLoc;
+	public Vector3 nextGroundSpawnLoc;
+	public Vector3 nextPlatformSpawnLoc;
 
 	// Start is called before the first frame update
 	void Start()
@@ -33,7 +34,8 @@ public class TerrainManager : MonoBehaviour
 			spawnedObjects.Add(go);
 			i += groundBank[rng].xUnitsOccupied; // move spawn position forward
 		}
-		nextSpawnLoc = new Vector3(i, 0f, 0f);
+		nextGroundSpawnLoc = new Vector3(i, 0f, 0f); // set spawn point of next ground tile
+		nextPlatformSpawnLoc = new Vector3(spawnPoint, 0f, 0f); // set spawn point of first platform tile
     }
 
 	// Update is called once per frame
@@ -51,21 +53,36 @@ public class TerrainManager : MonoBehaviour
 				spawnedObjects.RemoveAt(i);
 			}
 		}
-		nextSpawnLoc -= deltaPos; // also move spawn position
+		nextGroundSpawnLoc -= deltaPos; // also move spawn position
+		nextPlatformSpawnLoc -= deltaPos; // also move spawn position
 
-		//spawn more ground if needed
-		if (nextSpawnLoc.x <= spawnPoint)
+		// spawn more ground if needed
+		if (nextGroundSpawnLoc.x <= spawnPoint)
 		{
 			SpawnGroundTile();
 		}
-    }
+
+		// spawn platform tiles
+		if (nextPlatformSpawnLoc.x <= spawnPoint)
+		{
+			SpawnPlatformTile();
+		}
+	}
 
 	void SpawnGroundTile()
 	{
 		// spawn a random ground piece
 		int rng = Random.Range(0, groundBank.Count);
-		GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(nextSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(nextGroundSpawnLoc.x, 0f, 0f), Quaternion.identity);
 		spawnedObjects.Add(go);
-		nextSpawnLoc += new Vector3(groundBank[rng].xUnitsOccupied, 0f, 0f);
+		nextGroundSpawnLoc += new Vector3(groundBank[rng].xUnitsOccupied, 0f, 0f);
+	}
+
+	void SpawnPlatformTile()
+	{
+		int rng = Random.Range(0, platformBank.Count);
+		GameObject go = Instantiate(platformBank[rng].spawnPrefab, new Vector3(nextPlatformSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		spawnedObjects.Add(go);
+		nextPlatformSpawnLoc += new Vector3(platformBank[rng].xUnitsOccupied, 0f, 0f);
 	}
 }
