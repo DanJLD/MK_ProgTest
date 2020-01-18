@@ -3244,6 +3244,68 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
+--- !u!1 &1931312316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1931312318}
+  - component: {fileID: 1931312317}
+  m_Layer: 0
+  m_Name: ObjectPoolinator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1931312317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931312316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a651149c519eb74284c89c6cf1727d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pools:
+  - tag: platform
+    prefabs:
+    - {fileID: 11400000, guid: 71571feee6eb4e748939918476118988, type: 2}
+    - {fileID: 11400000, guid: 23afc64481b642c4e881ca513051dfb1, type: 2}
+    - {fileID: 11400000, guid: 8fc890b595ffec84286a7f9ded43b29b, type: 2}
+    - {fileID: 11400000, guid: efe06cedd9d2b4e44978925bda1d4d94, type: 2}
+    - {fileID: 11400000, guid: 795ab203da664e245a7a620509e6e2fb, type: 2}
+    - {fileID: 11400000, guid: 89122e3cff20ff544a24c3fb512c8d63, type: 2}
+    - {fileID: 11400000, guid: 568a5415bced8f848b60976173b00374, type: 2}
+    - {fileID: 11400000, guid: d4a3309810d207f44b6d8a66a7f2cf8a, type: 2}
+    - {fileID: 11400000, guid: c04dbf72c22f7e442a2331b814faea9b, type: 2}
+    size: 20
+    distType: 1
+  - tag: ground
+    prefabs:
+    - {fileID: 11400000, guid: fc927b38e3b781e478eb409955cccd7c, type: 2}
+    size: 10
+    distType: 1
+--- !u!4 &1931312318
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1931312316}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.6123686, y: 15.603555, z: 89.76041}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2122928139
 GameObject:
   m_ObjectHideFlags: 0
