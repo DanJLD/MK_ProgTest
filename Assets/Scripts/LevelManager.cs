@@ -91,7 +91,6 @@ public class LevelManager : MonoBehaviour
 
 	private void EndGameP2()
 	{
-		print("INVOKE SUCCESS");
 		if (finalRestartButton != null)
 			finalRestartButton.SetActive(true); // delay restart button activation so that players dont accidentally restart instantly
 	}
