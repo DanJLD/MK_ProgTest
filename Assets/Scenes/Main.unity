@@ -3290,7 +3290,7 @@ MonoBehaviour:
   - tag: ground
     prefabs:
     - {fileID: 11400000, guid: fc927b38e3b781e478eb409955cccd7c, type: 2}
-    size: 10
+    size: 20
     distType: 1
 --- !u!4 &1931312318
 Transform:

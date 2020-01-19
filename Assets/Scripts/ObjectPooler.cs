@@ -10,6 +10,13 @@ public class ObjectPooler : MonoBehaviour
 		SPREAD  // add an even amount of each prefab from the set, favouring those early in the list if an uneven amount is made.
 	}
 
+	#region Singleton
+	public static ObjectPooler Instance;
+	//private void Awake()
+	//{
+	//	Instance = this;
+	//}
+	#endregion
 
 	[System.Serializable]
 	public class Pool
@@ -20,17 +27,19 @@ public class ObjectPooler : MonoBehaviour
 		public ObjectPoolDistType distType;
 	}
 	public List<Pool> pools;
-	public Dictionary<string, Queue<GameObject>> poolDictionary;
+	public Dictionary<string, List<GameObject>> poolDictionary;
 
-    void Start()
+    void Awake()
     {
+		Instance = this; // singleton setup
+
 		int id;
 		GameObject go;
-		poolDictionary = new Dictionary<string, Queue<GameObject>>(); // create an empty dictionary of object queues (pools)
+		poolDictionary = new Dictionary<string, List<GameObject>>(); // create an empty dictionary of object queues (pools)
 
 		foreach (Pool pool in pools) // for each pool...
 		{
-			Queue<GameObject> objectPool = new Queue<GameObject>();
+			List<GameObject> objectPool = new List<GameObject>();
 
 			// populate the pool based on the distribution type
 			for (int i = 0; i < pool.size; i++)
@@ -45,12 +54,58 @@ public class ObjectPooler : MonoBehaviour
 				}
 				go = Instantiate(pool.prefabs[id].spawnPrefab);
 				go.SetActive(false);
-				objectPool.Enqueue(go);
+
+				// apply properties to gameObject
+				go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied = pool.prefabs[id].xUnitsOccupied;
+				// add more here as needed
+
+				objectPool.Add(go);
 			}
 
 			// randomise queue
-
+			objectPool = RandomiseList(objectPool);
 			poolDictionary.Add(pool.tag, objectPool);
 		}
     }
+
+	public GameObject SpawnFromPool (string tag, Vector3 pos, Quaternion rot)
+	{
+		if (!poolDictionary.ContainsKey(tag))
+		{
+			print("Error: Pool does not contain tag " + tag);
+			return null;
+		}
+
+		GameObject go;
+
+		if (poolDictionary[tag].Count > 0)
+		{
+			go = poolDictionary[tag][0];
+			go.SetActive(true);
+			go.transform.position = pos;
+			go.transform.rotation = rot;
+			poolDictionary[tag].RemoveAt(0); // dequeue
+			poolDictionary[tag].Add(go); // add to end of queue
+		}
+		else // pool is empty
+		{
+			// create more objects for object pool
+			go = null; // temperary
+		}
+		return go;
+	}
+
+	List<GameObject> RandomiseList(List<GameObject> list)
+	{
+		int rng;
+		
+		for (int i = list.Count - 1; i >= 0; i--) // backwards iteration so item deletion doesnt break things
+		{
+			rng = Random.Range(0, i); // select a random position from 1 to i
+			list.Add(list[rng]); 
+			list.RemoveAt(rng); // take it out, and place it at the end
+			// repeat until every element has been moved once.
+		}
+		return list;
+	}
 }

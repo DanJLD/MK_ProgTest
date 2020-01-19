@@ -33,9 +33,11 @@ public class TerrainManager : MonoBehaviour
 		{
 			// spawn a random ground piece
 			int rng = Random.Range(0, groundBank.Count);
-			GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(i, 0f, 0f), Quaternion.identity); 
+			//GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(i, 0f, 0f), Quaternion.identity); 
+			GameObject go = ObjectPooler.Instance.SpawnFromPool("ground", new Vector3(i, 0f, 0f), Quaternion.identity);
 			spawnedObjects.Add(go);
-			i += groundBank[rng].xUnitsOccupied; // move spawn position forward
+			//i += groundBank[rng].xUnitsOccupied; // move spawn position forward
+			i += go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied; // move spawn position forward
 		}
 		nextGroundSpawnLoc = new Vector3(i, 0f, 0f); // set spawn point of next ground tile
 		nextPlatformSpawnLoc = new Vector3(spawnPoint, 0f, 0f); // set spawn point of first platform tile
@@ -54,7 +56,8 @@ public class TerrainManager : MonoBehaviour
 				spawnedObjects[i].transform.position -= deltaPos;
 				if (spawnedObjects[i].transform.position.x <= destroyPoint)
 				{
-					Destroy(spawnedObjects[i]);
+					//Destroy(spawnedObjects[i]);
+					spawnedObjects[i].SetActive(false);
 					spawnedObjects.RemoveAt(i);
 				}
 			}
@@ -83,17 +86,22 @@ public class TerrainManager : MonoBehaviour
 	void SpawnGroundTile()
 	{
 		// spawn a random ground piece
-		int rng = Random.Range(0, groundBank.Count);
-		GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(nextGroundSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		//int rng = Random.Range(0, groundBank.Count);
+		//GameObject go = Instantiate(groundBank[rng].spawnPrefab, new Vector3(nextGroundSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		GameObject go = ObjectPooler.Instance.SpawnFromPool("ground", new Vector3(nextGroundSpawnLoc.x, 0f, 0f), Quaternion.identity);
 		spawnedObjects.Add(go);
-		nextGroundSpawnLoc += new Vector3(groundBank[rng].xUnitsOccupied, 0f, 0f);
+		//nextGroundSpawnLoc += new Vector3(groundBank[rng].xUnitsOccupied, 0f, 0f);
+		nextGroundSpawnLoc += new Vector3(go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied, 0f, 0f);
 	}
 
 	void SpawnPlatformTile()
 	{
-		int rng = Random.Range(0, platformBank.Count);
-		GameObject go = Instantiate(platformBank[rng].spawnPrefab, new Vector3(nextPlatformSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		//int rng = Random.Range(0, platformBank.Count);
+		//GameObject go = Instantiate(platformBank[rng].spawnPrefab, new Vector3(nextPlatformSpawnLoc.x, 0f, 0f), Quaternion.identity);
+		GameObject go = ObjectPooler.Instance.SpawnFromPool("platform", new Vector3(nextPlatformSpawnLoc.x, 0f, 0f), Quaternion.identity);
+
 		spawnedObjects.Add(go);
-		nextPlatformSpawnLoc += new Vector3(platformBank[rng].xUnitsOccupied, 0f, 0f);
+		//nextPlatformSpawnLoc += new Vector3(platformBank[rng].xUnitsOccupied, 0f, 0f);
+		nextPlatformSpawnLoc += new Vector3(go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied, 0f, 0f);
 	}
 }
