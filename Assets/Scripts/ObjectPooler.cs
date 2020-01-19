@@ -48,13 +48,7 @@ public class ObjectPooler : MonoBehaviour
 				{
 					id = i % pool.prefabs.Count; // counts from 0 to Count-1 repeatedly as i increments.
 				}
-				go = Instantiate(pool.prefabs[id].spawnPrefab);
-				go.SetActive(false);
-
-				// apply properties to gameObject
-				go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied = pool.prefabs[id].xUnitsOccupied;
-				// add more here as needed
-
+				go = InstantiateNewTile(pool, id);
 				objectPool.Add(go);
 			}
 
@@ -75,10 +69,10 @@ public class ObjectPooler : MonoBehaviour
 		}
 
 		GameObject go = null;
+		int i = 0;
 
 		if (poolDictionary[tag].Count > 0)
 		{
-			int i = 0;
 			bool targetAcquired = false;
 			while (!targetAcquired) // search for inactive tile, starting from the front of the list
 			{
@@ -93,40 +87,83 @@ public class ObjectPooler : MonoBehaviour
 				}
 				if (i >= poolDictionary[tag].Count) // if entire list is active, more tiles are needed
 				{
-					print("Warning: Pool exhausted. Creating a new pool tile." + tag);
+					print("Warning: '" + tag + "' pool exhausted. Creating a new pool tile.");
 					// create new object for pool
+					go = InstantiateNewRandomTile(tag); // create a new object for object pool
+					poolDictionary[tag].Add(go); // add to end of queue
 					targetAcquired = true;
-					return null; // temp
 				}
 			}
-
-			// initialise tile
-			//go = poolDictionary[tag][0];
-			go.SetActive(true);
-			go.transform.position = pos;
-			go.transform.rotation = rot;
-			poolDictionary[tag].RemoveAt(i); // dequeue
-			poolDictionary[tag].Add(go); // add to end of queue
-
-			// Occasionally randomise list to ensure no repeat patterns
-			// > count number of spawns. If all have spawned, randomise list again
-			poolRngCounters[tag]++;
-			if (poolRngCounters[tag] >= poolDictionary[tag].Count)
-			{
-				poolDictionary[tag] = RandomiseList(poolDictionary[tag]);
-				//poolRngCounters[tag] = 0;
-			}
-			
 		}
 		else // pool is empty
 		{
-			print("Warning: Pool is empty. Creating a new pool tile." + tag);
-			// create more objects for object pool
-			go = null; // temperary
+			print("Warning: '" + tag + "' pool is empty. Creating a new pool tile.");
+			go = InstantiateNewRandomTile(tag); // create a new object for object pool
+			poolDictionary[tag].Add(go); // add to end of queue
+			i = 0;
 		}
+
+		// initialise tile
+		//go = poolDictionary[tag][0];
+		go.SetActive(true);
+		go.transform.position = pos;
+		go.transform.rotation = rot;
+		poolDictionary[tag].RemoveAt(i); // dequeue
+		poolDictionary[tag].Add(go); // add to end of queue
+
+		// Occasionally randomise list to ensure no repeat patterns
+		// > count number of spawns. If all have spawned, randomise list again
+		poolRngCounters[tag]++;
+		if (poolRngCounters[tag] >= poolDictionary[tag].Count)
+		{
+			poolDictionary[tag] = RandomiseList(poolDictionary[tag]);
+			//poolRngCounters[tag] = 0;
+		}
+
 		return go;
 	}
 
+	GameObject InstantiateNewTile(Pool pool, int id)
+	{
+		GameObject go = Instantiate(pool.prefabs[id].spawnPrefab);
+		go.SetActive(false);
+
+		// apply properties to gameObject
+		go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied = pool.prefabs[id].xUnitsOccupied;
+		// add more here as needed
+
+		return go;
+	}
+
+	GameObject InstantiateNewRandomTile(string tag)
+	{
+		int poolId = -1;
+		for (int i = 0; i < pools.Count; i++)
+		{
+			if (pools[i].tag == tag)
+			{
+				poolId = i;
+			}
+		}
+		if (poolId != -1)
+		{
+			int rng = Random.Range(0, pools[poolId].prefabs.Count);
+			GameObject go = Instantiate(pools[poolId].prefabs[rng].spawnPrefab);
+			go.SetActive(false);
+
+			// apply properties to gameObject
+			go.GetComponent<TerrainPieceInstance>().terrainInfo.xUnitsOccupied = pools[poolId].prefabs[rng].xUnitsOccupied;
+			// add more here as needed
+
+			return go;
+		}
+		else
+		{
+			print("ERROR: Attempted to instantiate tile from pool of tag '" + tag + "', no such pool exists.");
+			return null;
+		}
+
+	}
 	List<GameObject> RandomiseList(List<GameObject> list)
 	{
 		int rng;

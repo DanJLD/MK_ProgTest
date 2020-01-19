@@ -3285,12 +3285,12 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 568a5415bced8f848b60976173b00374, type: 2}
     - {fileID: 11400000, guid: d4a3309810d207f44b6d8a66a7f2cf8a, type: 2}
     - {fileID: 11400000, guid: c04dbf72c22f7e442a2331b814faea9b, type: 2}
-    size: 20
+    size: 18
     distType: 1
   - tag: ground
     prefabs:
     - {fileID: 11400000, guid: fc927b38e3b781e478eb409955cccd7c, type: 2}
-    size: 20
+    size: 15
     distType: 1
 --- !u!4 &1931312318
 Transform:
